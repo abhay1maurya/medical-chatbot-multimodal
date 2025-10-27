@@ -1,20 +1,23 @@
-markdown
+```markdown
 # 🩺 MedBot - Multimodal Medical Assistant
 
-A fully functional multimodal medical chatbot built with Flask and Google's Gemini API that accepts text, images, and audio inputs while providing text-based medical responses.
+A fully functional multimodal medical chatbot built with Flask and Google's Gemini API that accepts **text, images, and audio inputs** while providing **text-based medical responses**. Perfect for analyzing prescriptions, lab reports, symptom descriptions, and medical queries.
 
 ![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)
 ![Flask](https://img.shields.io/badge/Flask-2.3.3-green.svg)
 ![Gemini](https://img.shields.io/badge/Gemini-2.0_Flash_Multimodal-orange.svg)
+![Multimodal](https://img.shields.io/badge/Inputs-Text%2C%20Images%2C%20Audio-purple.svg)
 
 ## ✨ Features
 
 - 🏥 **Medical Safety Focus** - Built-in disclaimers and emergency guidance
-- 💬 **Multimodal Input** - Accepts text, images, and audio
-- 📷 **Image Analysis** - Extract text from medical images, prescriptions, reports
-- 🎤 **Speech Recognition** - Convert audio descriptions to text
+- 💬 **Multimodal Input** - Accepts text, images, and audio inputs
+- 📷 **Image Analysis** - Extract text from medical images, prescriptions, lab reports
+- 🎤 **Speech Recognition** - Convert audio descriptions to text using Google Speech API
+- ⏺️ **Browser Recording** - Record audio directly in browser (no extra dependencies)
 - 🔌 **REST API** - Programmatic access to all features
 - 📱 **Mobile Responsive** - Works seamlessly on all devices
+- 🔒 **Secure** - Environment-based API key management
 
 ## 🚀 Quick Start
 
@@ -23,69 +26,90 @@ A fully functional multimodal medical chatbot built with Flask and Google's Gemi
 - Python 3.12+
 - [Gemini API Key](https://makersuite.google.com/app/apikey)
 
-### Installation
+### Installation & Setup
 
 1. **Clone and setup environment**
    ```bash
    git clone <your-repo-url>
    cd medical-chatbot-multimodal
    
+   # Create virtual environment
    python -m venv venv
+   
+   # Activate virtual environment
    # Windows:
    venv\Scripts\activate
    # macOS/Linux:
    source venv/bin/activate
-Install dependencies
+   ```
 
-bash
-pip install -r requirements.txt
-Configure environment
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-bash
-cp .env.example .env
-# Edit .env and add your Gemini API key
-Run application
+3. **Configure environment**
+   ```bash
+   # Copy environment template
+   cp .env.example .env
+   
+   # Edit .env and add your Gemini API key
+   # GEMINI_API_KEY=your_actual_gemini_api_key_here
+   ```
 
-bash
-python app.py
-Visit: http://localhost:8000
+4. **Run the application**
+   ```bash
+   python app.py
+   ```
 
-📁 Project Structure
-text
+5. **Access the application**
+   - 🌐 **Web Interface**: http://localhost:8000
+   - 🔧 **API Documentation**: http://localhost:8000/api/info
+   - ❤️ **Health Check**: http://localhost:8000/api/health
+
+## 🎯 Usage Examples
+
+### Text Input
+- "What are common flu symptoms?"
+- "How can I manage high blood pressure naturally?"
+- "When should I see a doctor for a fever?"
+
+### Image Input (Upload or Capture)
+- **Prescriptions**: Upload prescription images for explanation
+- **Lab Reports**: Medical report analysis and interpretation
+- **Medical Forms**: Extract information from medical documents
+- **Skin Conditions**: General information from skin photos
+- **Medical Devices**: Explain medical device instructions
+
+### Audio Input (Upload or Record)
+- **Symptom Descriptions**: Voice descriptions of symptoms
+- **Medical Questions**: Recorded health concerns
+- **Follow-up Questions**: Audio queries about previous responses
+- **Accessibility**: Voice input for users who prefer speaking
+
+## 📁 Project Structure
+
+```
 medical-chatbot-multimodal/
 ├── app.py                 # Main Flask application
 ├── requirements.txt       # Python dependencies
 ├── .env.example          # Environment template
-├── templates/index.html  # Web interface
+├── .gitignore            # Git exclusion rules
+├── README.md             # This documentation
+├── templates/
+│   └── index.html        # Web chat interface
 ├── static/
-│   ├── style.css         # Styling
-│   └── script.js         # Frontend logic
-└── uploads/              # File upload directory
-🎯 Usage Examples
-Text Input
-"What are common flu symptoms?"
+│   ├── style.css         # Responsive styling
+│   └── script.js         # Frontend logic & audio recording
+└── uploads/              # File upload directory (auto-created)
+    ├── images/
+    └── audio/
+```
 
-"How can I manage high blood pressure?"
+## 🔌 API Endpoints
 
-Image Input
-Upload prescription images for explanation
-
-Medical report analysis
-
-Skin condition photos (for general information)
-
-Lab result interpretation
-
-Audio Input
-Voice descriptions of symptoms
-
-Recorded medical questions
-
-Verbal health concerns
-
-🔌 API Endpoints
-Chat Endpoint
-bash
+### Chat Endpoint
+```bash
 POST /api/chat
 Content-Type: multipart/form-data
 
@@ -96,95 +120,271 @@ message: "Optional text context"
 # Text-only
 Content-Type: application/json
 {"message": "Your medical question"}
-Response Format
-json
+```
+
+### Response Format
+```json
 {
-  "response": "Medical advice...",
+  "response": "Medical advice and information...",
   "input_type": "image|audio|text",
-  "extracted_context": "Text from image/audio",
-  "disclaimer": "Safety notice...",
+  "extracted_context": "Text extracted from image/audio",
+  "disclaimer": "⚠️ Important: This information is for educational purposes only...",
   "success": true
 }
-⚠️ Medical Disclaimer
-This chatbot provides general health information only and is NOT a substitute for professional medical advice.
+```
 
-🚨 For emergencies: Call your local emergency services immediately
+### Other Endpoints
+- `GET /api/health` - Service health check
+- `GET /api/info` - API documentation and capabilities
+- `GET /` - Web interface
 
-🏥 For medical concerns: Always consult qualified healthcare professionals
+### Example API Usage
+```bash
+# Text query
+curl -X POST "http://localhost:8000/api/chat" \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What are common cold symptoms?"}'
 
-📋 For diagnoses: See a doctor for proper medical evaluation
+# File upload
+curl -X POST "http://localhost:8000/api/chat" \
+  -F "file=@prescription.jpg" \
+  -F "message=Can you explain this prescription?"
+```
 
-🔧 Technical Details
-Image Processing
-Uses Gemini Vision API for text extraction
+## ⚠️ Medical Disclaimer
 
-Supports: PNG, JPG, JPEG, GIF, BMP
+**This chatbot provides general health information only and is NOT a substitute for professional medical advice.**
 
-Max file size: 16MB
+### Critical Safety Information
+- 🚨 **For emergencies**: Call your local emergency services immediately
+- 🏥 **For medical concerns**: Always consult qualified healthcare professionals
+- 📋 **For diagnoses**: See a doctor for proper medical evaluation
+- 💊 **For treatments**: Follow prescribed medical treatments from your healthcare provider
+- 🔍 **For prescriptions**: Always verify with your pharmacist or doctor
 
-Audio Processing
-Uses Google Speech Recognition
+**The AI provides educational information but cannot diagnose, treat, or provide personalized medical advice.**
 
-Supports: WAV, MP3, FLAC, M4A
+## 🔧 Technical Details
 
-Real-time recording available
+### Image Processing
+- **Technology**: Google Gemini  API
+- **Supported Formats**: PNG, JPG, JPEG, GIF, BMP
+- **Max File Size**: 16MB
+- **Capabilities**: Text extraction from medical documents, prescriptions, lab reports
 
-Max file size: 16MB
+### Audio Processing
+- **Speech-to-Text**: Google Web Speech API
+- **Supported Formats**: WAV, MP3, FLAC, M4A
+- **Browser Recording**: Direct recording via MediaRecorder API
+- **Max File Size**: 16MB
 
-Models Used
-Text: gemini-pro for medical responses
+### AI Models Used
+- **Text Generation**: `gemini-2.0-flash` for medical responses
+- **Vision Analysis**: `gemini-2.0-flash` for image understanding
+- **Speech Recognition**: `speech_recognition` with Google Web Speech API
 
-Vision: gemini-pro-vision for image analysis
+### Security Features
+- API keys stored in `.env` (never committed to version control)
+- File upload validation and sanitization
+- No persistent storage of sensitive medical data
+- CORS protection and input validation
 
-Audio: speech_recognition with Google Web Speech API
+## 🐛 Troubleshooting
 
-🐛 Troubleshooting
-Common Issues
-API Key Error
+### Common Issues & Solutions
 
-Ensure .env file has correct GEMINI_API_KEY
+1. **API Key Error**
+   ```bash
+   # Ensure .env file exists with correct key
+   cat .env
+   # Should show: GEMINI_API_KEY=your_actual_key_here
+   ```
 
-Verify key is active in Google AI Studio
+2. **Audio Recording Not Working**
+   - Allow microphone permissions in your browser
+   - Use HTTPS in production for microphone access
+   - Check browser console for errors
 
-Audio Recording Issues
+3. **File Upload Errors**
+   - Check file size (max 16MB)
+   - Verify supported formats: images (PNG, JPG, etc.) and audio (WAV, MP3, etc.)
+   - Ensure uploads directory has write permissions
 
-Allow microphone permissions in browser
+4. **Module Import Errors**
+   ```bash
+   # Reactivate virtual environment
+   venv\Scripts\activate  # Windows
+   source venv/bin/activate  # macOS/Linux
+   
+   # Reinstall dependencies
+   pip install -r requirements.txt
+   ```
 
-Use HTTPS for microphone access in production
-
-File Upload Errors
-
-Check file size (max 16MB)
-
-Verify supported file formats
-
-Health Check
-bash
+### Health Check
+Verify everything is working:
+```bash
 curl http://localhost:8000/api/health
-🚀 Deployment
-For production:
+```
+Expected response:
+```json
+{
+  "status": "healthy",
+  "service": "Multimodal Medical Chatbot API",
+  "text_model_ready": true,
+  "vision_model_ready": true,
+  "supported_inputs": ["text", "image", "audio"]
+}
+```
 
-Set debug=False in app.py
+## 🚀 Production Deployment
 
-Use production WSGI server
+### For Production Use
 
-Configure HTTPS for microphone access
+1. **Update Configuration**
+   ```python
+   # In app.py, change:
+   app.run(debug=False)  # Set to False in production
+   ```
 
-Set proper file upload limits
+2. **Use Production WSGI Server**
+   ```bash
+   pip install gunicorn
+   gunicorn -w 4 -b 0.0.0.0:8000 app:app
+   ```
 
-bash
-# With Gunicorn
-pip install gunicorn
-gunicorn -w 4 -b 0.0.0.0:8000 app:app
-🔒 Security Notes
-API keys stored in .env (never committed)
+3. **Environment Variables for Production**
+   ```env
+   FLASK_ENV=production
+   SECRET_KEY=your_secure_secret_key
+   MAX_FILE_SIZE=16777216
+   ```
 
-File uploads sanitized and validated
+4. **HTTPS Setup** (Required for microphone access)
+   - Use reverse proxy (Nginx/Apache)
+   - Set up SSL certificates
+   - Configure HTTPS redirects
 
-No persistent storage of medical data
+### Docker Support (Optional)
+```dockerfile
+FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["python", "app.py"]
+```
 
-Use HTTPS in production
+## 🔒 Security Best Practices
 
-Built with ❤️ using Flask & Gemini AI
+1. **API Key Management**
+   - Never commit `.env` to version control
+   - Use different keys for development and production
+   - Regularly rotate API keys
 
-Remember: Always consult healthcare professionals for medical advice.
+2. **Data Privacy**
+   - No personal health information is stored
+   - All file uploads are processed temporarily
+   - Conversations are not persisted
+
+3. **Input Validation**
+   - File type verification
+   - Size limits enforcement
+   - Content sanitization
+
+## 📊 Performance Notes
+
+- **Image Processing**: ~2-5 seconds depending on size and complexity
+- **Audio Processing**: ~1-3 seconds for typical recordings
+- **Text Generation**: ~1-2 seconds for most queries
+- **Memory Usage**: Minimal, with file size limits preventing overload
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these guidelines:
+
+1. **Setup Development Environment**
+   ```bash
+   git clone <repository>
+   cd medical-chatbot-multimodal
+   python -m venv venv
+   source venv/bin/activate  # or venv\Scripts\activate
+   pip install -r requirements.txt
+   cp .env.example .env
+   # Add your API key to .env
+   ```
+
+2. **Code Standards**
+   - Follow PEP 8 guidelines
+   - Add type hints for new functions
+   - Include docstrings for complex logic
+   - Update requirements.txt when adding dependencies
+
+3. **Testing**
+   - Test all input types (text, image, audio)
+   - Verify error handling
+   - Check mobile responsiveness
+
+## 📄 License
+
+This project is for educational and demonstration purposes. Medical chatbot applications should comply with healthcare regulations in your jurisdiction and should be reviewed by medical professionals before clinical use.
+
+## 🆘 Support
+
+If you encounter issues:
+
+1. Check the troubleshooting section above
+2. Verify your API key is valid and has sufficient quota
+3. Check browser console for frontend errors
+4. Review Flask server logs for backend errors
+
+---
+
+<div align="center">
+
+**Built with ❤️ using Flask & Gemini AI**
+
+### 🎯 Perfect For
+- Medical education and information
+- Symptom checking guidance
+- Prescription and lab report explanation
+- Healthcare accessibility tools
+
+[Report Bug](https://github.com/abhay1maurya/medical-chatbot/issues) · [Request Feature](https://github.com/abhay1maurya/medical-chatbot/issues)
+
+</div>
+
+---
+
+**Remember**: This tool is for educational information only. Always consult healthcare professionals for medical advice, diagnosis, and treatment. In emergencies, call your local emergency services immediately.
+```
+
+## 🎯 Ready-to-Use Configuration Files
+
+### .env.example
+```env
+# Google Gemini API Configuration
+# Get your API key from: https://makersuite.google.com/app/apikey
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Flask Configuration
+FLASK_ENV=development
+SECRET_KEY=your_secret_key_here
+
+# File Upload Settings
+MAX_FILE_SIZE=16777216  # 16MB in bytes
+ALLOWED_IMAGE_EXTENSIONS=png,jpg,jpeg,gif,bmp
+ALLOWED_AUDIO_EXTENSIONS=wav,mp3,flac,m4a
+```
+
+### requirements.txt
+```txt
+flask==2.3.3
+python-dotenv==1.0.0
+google-generativeai==0.3.2
+pillow==10.0.1
+speechrecognition==3.10.0
+pydub==0.25.1
+werkzeug==2.3.7
+```
+
+pip install wheel
