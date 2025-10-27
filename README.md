@@ -1,4 +1,4 @@
-```markdown
+
 # 🩺 MedBot - Multimodal Medical Assistant
 
 A fully functional multimodal medical chatbot built with Flask and Google's Gemini API that accepts **text, images, and audio inputs** while providing **text-based medical responses**. Perfect for analyzing prescriptions, lab reports, symptom descriptions, and medical queries.
