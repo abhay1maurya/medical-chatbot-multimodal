@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedBot - Multimodal Medical Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🩺 MedBot - Multimodal Medical Assistant</h1>
+            <p class="subtitle">Ask questions via text, upload images, or record audio</p>
+            <div class="disclaimer">
+                <strong>⚠️ Important:</strong> This chatbot provides general health information only and is NOT a substitute for professional medical advice. For emergencies, call your local emergency services immediately.
+            </div>
+        </header>
+
+        <div class="chat-container">
+            <div id="chat-messages" class="chat-messages">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        <strong>MedBot:</strong> Hello! I can help with medical questions through text, images (prescriptions, reports), or audio recordings. How can I assist you today?
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <!-- Text Input -->
+                <div class="input-group">
+                    <input type="text" id="user-input" placeholder="Type your medical question here...">
+                    <button id="send-btn">Send Text</button>
+                </div>
+
+                <!-- File Upload Section -->
+                <div class="file-upload-section">
+                    <div class="upload-options">
+                        <!-- Image Upload -->
+                        <div class="upload-option">
+                            <label for="image-upload" class="upload-label">
+                                📷 Upload Image
+                            </label>
+                            <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                            <span class="file-info" id="image-info">No image selected</span>
+                        </div>
+
+                        <!-- Audio Upload -->
+                        <div class="upload-option">
+                            <label for="audio-upload" class="upload-label">
+                                🎤 Upload Audio
+                            </label>
+                            <input type="file" id="audio-upload" accept="audio/*" style="display: none;">
+                            <span class="file-info" id="audio-info">No audio selected</span>
+                        </div>
+
+                        <!-- Audio Recording -->
+                        <div class="upload-option">
+                            <button id="record-btn" class="record-button">🎤 Record Audio</button>
+                            <div id="recording-controls" style="display: none;">
+                                <span class="recording-indicator">● Recording...</span>
+                                <button id="stop-record-btn">Stop</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- File Upload Button -->
+                    <button id="upload-btn" class="upload-button" disabled>Send File</button>
+                </div>
+
+                <!-- Example Questions -->
+                <div class="example-questions">
+                    <p>Try asking:</p>
+                    <div class="examples">
+                        <span class="example" data-question="What are common flu symptoms?">Flu symptoms</span>
+                        <span class="example" data-question="How to manage stress?">Stress management</span>
+                        <span class="example" data-question="What is healthy blood pressure?">Blood pressure</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Powered by Google Gemini AI | Always consult healthcare professionals for medical advice</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
