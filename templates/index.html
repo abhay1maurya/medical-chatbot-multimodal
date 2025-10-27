@@ -3,85 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedBot - Multimodal Medical Assistant</title>
+    <title>MedBot Pro - Multimodal Medical Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🩺 MedBot - Multimodal Medical Assistant</h1>
-            <p class="subtitle">Ask questions via text, upload images, or record audio</p>
-            <div class="disclaimer">
-                <strong>⚠️ Important:</strong> This chatbot provides general health information only and is NOT a substitute for professional medical advice. For emergencies, call your local emergency services immediately.
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-stethoscope"></i>
+                    <h1>MedBot Pro</h1>
+                </div>
+                <p class="tagline">Your AI Medical Assistant</p>
             </div>
-        </header>
 
-        <div class="chat-container">
-            <div id="chat-messages" class="chat-messages">
-                <div class="message bot-message">
-                    <div class="message-content">
-                        <strong>MedBot:</strong> Hello! I can help with medical questions through text, images (prescriptions, reports), or audio recordings. How can I assist you today?
+            <div class="input-methods">
+                <div class="method-card active" data-method="text">
+                    <i class="fas fa-keyboard"></i>
+                    <span>Text</span>
+                </div>
+                <div class="method-card" data-method="image">
+                    <i class="fas fa-image"></i>
+                    <span>Image</span>
+                </div>
+                <div class="method-card" data-method="audio">
+                    <i class="fas fa-microphone"></i>
+                    <span>Audio</span>
+                </div>
+            </div>
+
+            <div class="quick-questions">
+                <h3>Quick Questions</h3>
+                <div class="question-chips">
+                    <div class="chip" data-question="What are common flu symptoms?">
+                        <i class="fas fa-temperature-high"></i>
+                        Flu Symptoms
+                    </div>
+                    <div class="chip" data-question="How to manage stress and anxiety?">
+                        <i class="fas fa-brain"></i>
+                        Stress Management
+                    </div>
+                    <div class="chip" data-question="What is considered healthy blood pressure?">
+                        <i class="fas fa-heartbeat"></i>
+                        Blood Pressure
+                    </div>
+                    <div class="chip" data-question="When should I see a doctor for a fever?">
+                        <i class="fas fa-thermometer"></i>
+                        Fever Guidance
                     </div>
                 </div>
             </div>
 
-            <div class="input-area">
-                <!-- Text Input -->
-                <div class="input-group">
-                    <input type="text" id="user-input" placeholder="Type your medical question here...">
-                    <button id="send-btn">Send Text</button>
+            <div class="disclaimer-box">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p><strong>Important:</strong> For medical emergencies, call emergency services immediately.</p>
+            </div>
+        </div>
+
+        <!-- Main Chat Area -->
+        <div class="main-content">
+            <header class="chat-header">
+                <div class="header-info">
+                    <h2>Medical Assistant</h2>
+                    <p>Ask questions via text, upload images, or record audio</p>
+                </div>
+                <div class="connection-status">
+                    <i class="fas fa-circle connected" id="status-indicator"></i>
+                    <span id="status-text">Connected</span>
+                </div>
+            </header>
+
+            <div class="chat-container">
+                <div id="chat-messages" class="chat-messages">
+                    <div class="message bot-message welcome-message">
+                        <div class="message-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <strong>MedBot Pro</strong>
+                                <span class="message-time" id="current-time"></span>
+                            </div>
+                            <p>Hello! I'm your medical assistant. I can help you understand medical information through text, images (prescriptions, lab reports), or audio recordings. How can I assist you today?</p>
+                            <div class="message-tip">
+                                <i class="fas fa-lightbulb"></i>
+                                <strong>Tip:</strong> Use the sidebar to switch between input methods
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- File Upload Section -->
-                <div class="file-upload-section">
-                    <div class="upload-options">
-                        <!-- Image Upload -->
-                        <div class="upload-option">
-                            <label for="image-upload" class="upload-label">
-                                📷 Upload Image
-                            </label>
-                            <input type="file" id="image-upload" accept="image/*" style="display: none;">
-                            <span class="file-info" id="image-info">No image selected</span>
-                        </div>
-
-                        <!-- Audio Upload -->
-                        <div class="upload-option">
-                            <label for="audio-upload" class="upload-label">
-                                🎤 Upload Audio
-                            </label>
-                            <input type="file" id="audio-upload" accept="audio/*" style="display: none;">
-                            <span class="file-info" id="audio-info">No audio selected</span>
-                        </div>
-
-                        <!-- Audio Recording -->
-                        <div class="upload-option">
-                            <button id="record-btn" class="record-button">🎤 Record Audio</button>
-                            <div id="recording-controls" style="display: none;">
-                                <span class="recording-indicator">● Recording...</span>
-                                <button id="stop-record-btn">Stop</button>
+                <!-- Input Area -->
+                <div class="input-area">
+                    <!-- Text Input -->
+                    <div class="input-section active" id="text-input">
+                        <div class="input-group">
+                            <div class="input-wrapper">
+                                <input type="text" id="user-input" placeholder="Describe your symptoms or ask a medical question...">
+                                <button id="send-btn" class="send-button">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Send
+                                </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- File Upload Button -->
-                    <button id="upload-btn" class="upload-button" disabled>Send File</button>
-                </div>
+                    <!-- Image Input -->
+                    <div class="input-section" id="image-input">
+                        <div class="upload-area" id="image-upload-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <h3>Upload Medical Image</h3>
+                            <p>Supports prescriptions, lab reports, medical documents</p>
+                            <input type="file" id="image-upload" accept="image/*" hidden>
+                            <button class="upload-button" onclick="document.getElementById('image-upload').click()">
+                                Choose File
+                            </button>
+                            <div class="file-info" id="image-info">No file selected</div>
+                        </div>
+                        <div class="upload-actions">
+                            <input type="text" id="image-context" placeholder="Optional: Add context about this image..." class="context-input">
+                            <button id="upload-image-btn" class="action-button" disabled>
+                                <i class="fas fa-upload"></i>
+                                Upload & Analyze
+                            </button>
+                        </div>
+                    </div>
 
-                <!-- Example Questions -->
-                <div class="example-questions">
-                    <p>Try asking:</p>
-                    <div class="examples">
-                        <span class="example" data-question="What are common flu symptoms?">Flu symptoms</span>
-                        <span class="example" data-question="How to manage stress?">Stress management</span>
-                        <span class="example" data-question="What is healthy blood pressure?">Blood pressure</span>
+                    <!-- Audio Input -->
+                    <div class="input-section" id="audio-input">
+                        <div class="audio-controls">
+                            <div class="upload-area" id="audio-upload-area">
+                                <i class="fas fa-file-audio"></i>
+                                <h3>Upload Audio File</h3>
+                                <p>Or record using your microphone</p>
+                                <input type="file" id="audio-upload" accept="audio/*" hidden>
+                                <button class="upload-button" onclick="document.getElementById('audio-upload').click()">
+                                    Choose File
+                                </button>
+                                <div class="file-info" id="audio-info">No file selected</div>
+                            </div>
+
+                            <div class="recording-section">
+                                <div class="recording-controls">
+                                    <button id="record-btn" class="record-button">
+                                        <i class="fas fa-microphone"></i>
+                                        Start Recording
+                                    </button>
+                                    <div id="recording-display" class="recording-display" style="display: none;">
+                                        <div class="recording-indicator">
+                                            <i class="fas fa-circle recording"></i>
+                                            Recording...
+                                            <span id="recording-timer">00:00</span>
+                                        </div>
+                                        <button id="stop-record-btn" class="stop-button">
+                                            <i class="fas fa-stop"></i>
+                                            Stop
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="audio-waveform" id="audio-waveform" style="display: none;">
+                                    <div class="wave-bar"></div>
+                                    <div class="wave-bar"></div>
+                                    <div class="wave-bar"></div>
+                                    <div class="wave-bar"></div>
+                                    <div class="wave-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="upload-actions">
+                            <input type="text" id="audio-context" placeholder="Optional: Add context about this audio..." class="context-input">
+                            <button id="upload-audio-btn" class="action-button" disabled>
+                                <i class="fas fa-upload"></i>
+                                Process Audio
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <footer>
-            <p>Powered by Google Gemini AI | Always consult healthcare professionals for medical advice</p>
-        </footer>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Processing your request...</p>
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
