@@ -78,9 +78,8 @@ body {
 .logo h1 {
     font-size: 1.5rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #60a5fa, #3b82f6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background: linear-gradient(#1C2534);
+    -webkit-text-fill-color: #e5e7eb;
 }
 
 .tagline {
@@ -425,12 +424,14 @@ body {
 
 /* Upload Areas */
 .upload-area {
+
     border: 2px dashed var(--gray-300);
     border-radius: var(--radius-lg);
     padding: 3rem 2rem;
     text-align: center;
     transition: all 0.3s ease;
     margin-bottom: 1.5rem;
+    display:none
 }
 
 .upload-area:hover {
@@ -507,6 +508,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    margin-left:18rem;;
 }
 
 .record-button {
