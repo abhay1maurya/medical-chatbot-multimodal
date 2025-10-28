@@ -118,17 +118,21 @@
                             <h3>Upload Medical Image</h3>
                             <p>Supports prescriptions, lab reports, medical documents</p>
                             <input type="file" id="image-upload" accept="image/*" hidden>
-                            <button class="upload-button" onclick="document.getElementById('image-upload').click()">
+                            <!-- <button class="upload-button" onclick="document.getElementById('image-upload').click()">
                                 Choose File
-                            </button>
+                            </button> -->
                             <div class="file-info" id="image-info">No file selected</div>
                         </div>
                         <div class="upload-actions">
-                            <input type="text" id="image-context" placeholder="Optional: Add context about this image..." class="context-input">
+                            <input type="text" id="image-context" placeholder="Optional: Add context about this image..." class="context-input" >
+                            <button class="upload-button" onclick="document.getElementById('image-upload').click()">
+                                Choose File
+                            </button>
                             <button id="upload-image-btn" class="action-button" disabled>
                                 <i class="fas fa-upload"></i>
-                                Upload & Analyze
+                                Send
                             </button>
+                
                         </div>
                     </div>
 
@@ -174,11 +178,15 @@
                             </div>
                         </div>
                         <div class="upload-actions">
-                            <input type="text" id="audio-context" placeholder="Optional: Add context about this audio..." class="context-input">
+                            <input type="text" id="audio-context" placeholder="Text Here:" class="context-input">
                             <button id="upload-audio-btn" class="action-button" disabled>
                                 <i class="fas fa-upload"></i>
-                                Process Audio
+                                Send
                             </button>
+                            <!-- <button id="send-btn" class="send-button">
+                                <i class="fas fa-paper-plane"></i>
+                                Send
+                            </button> -->
                         </div>
                     </div>
                 </div>
